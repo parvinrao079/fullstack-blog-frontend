@@ -5,15 +5,17 @@ function HomePage({ searchQuery }) {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
 
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
-    fetch('http://localhost:3000/posts')
+    fetch(`${apiUrl}/posts`)
       .then(response => response.json())
       .then(data => {
         setPosts(data);
         setFilteredPosts(data);
       })
       .catch(error => console.error('Error fetching posts:', error));
-  }, []);
+  }, [apiUrl]);
 
   useEffect(() => {
     if (searchQuery) {

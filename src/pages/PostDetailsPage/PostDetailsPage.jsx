@@ -8,19 +8,22 @@ function PostDetailsPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({ author: '', title: '', content: '', cover: '' });
 
+  // Use the API URL from environment variable
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
-    fetch(`http://localhost:3000/posts/${id}`)
+    fetch(`${apiUrl}/posts/${id}`)
       .then(response => response.json())
       .then(data => {
         setPost(data);
         setFormData({ author: data.author, title: data.title, content: data.content, cover: data.cover });
       })
       .catch(error => console.error('Error fetching post:', error));
-  }, [id]);
+  }, [id, apiUrl]);
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/posts/${id}`, { method: 'DELETE' });
+      const response = await fetch(`${apiUrl}/posts/${id}`, { method: 'DELETE' });
       if (response.ok) navigate('/');
     } catch (error) {
       console.error('Error deleting post:', error);
@@ -30,7 +33,7 @@ function PostDetailsPage() {
   const handleEdit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:3000/posts/${id}`, {
+      const response = await fetch(`${apiUrl}/posts/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -48,6 +51,7 @@ function PostDetailsPage() {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
 
   if (!post) return <div className="min-h-screen bg-[#DFF2EB] p-4">Loading...</div>;
 

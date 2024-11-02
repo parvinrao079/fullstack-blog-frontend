@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 function CreatePostPage() {
   const [form, setForm] = useState({ author: '', title: '', content: '', cover: '' });
   const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_API_URL;  // Use the API URL from environment variable
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -13,7 +14,7 @@ function CreatePostPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/posts', {
+      const response = await fetch(`${apiUrl}/posts`, {  // Updated to use apiUrl
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
